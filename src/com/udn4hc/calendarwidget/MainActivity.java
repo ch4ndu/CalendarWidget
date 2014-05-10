@@ -1,5 +1,8 @@
 package com.udn4hc.calendarwidget;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -15,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.CalendarView.OnDateChangeListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -27,6 +31,9 @@ public class MainActivity extends Activity {
 			Calendars.CALENDAR_DISPLAY_NAME, // 2
 			Calendars.OWNER_ACCOUNT // 3
 	};
+	static int currentMonth;
+	static int currentYear;
+	static int currentDay;
 
 	// The indices for the projection array above.
 	public static final int PROJECTION_ID_INDEX = 0;
@@ -39,12 +46,57 @@ public class MainActivity extends Activity {
 	public static final String calendarName = "CalendarWidget";
 	public static final String calendarDisplayname = "Calendar Widget";
 
-	public static Uri calendarUri;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		setTitle("Calendar Widget");
+
+		TextView tv = (TextView) findViewById(R.id.textView1);
+
+		Calendar c = Calendar.getInstance();
+		SimpleDateFormat df = new SimpleDateFormat("dd/MMM/yyyy");
+		String formattedDate = df.format(c.getTime());
+		tv.setText(formattedDate);
+
+		initCalendar();
+
+		cal = (CalendarView) findViewById(R.id.calendarView1);
+		cal.setOnDateChangeListener(new OnDateChangeListener() {
+
+			@Override
+			public void onSelectedDayChange(CalendarView view, int year,
+					int month, int dayOfMonth) {
+				// TODO Auto-generated method stub
+
+				Toast.makeText(
+						getBaseContext(),
+						"Selected Date is\n\n" + dayOfMonth + " : " + month
+								+ " : " + year, Toast.LENGTH_LONG).show();
+
+				currentYear = year;
+				currentMonth = month;
+				currentDay = dayOfMonth;
+
+				TextView tv = (TextView) findViewById(R.id.textView1);
+				tv.setText((month + 1) + "/" + dayOfMonth + "/" + year);
+
+			}
+		});
+
+	}
+
+	public void getAgenda(View view) {
+
+		Intent intent = new Intent(getApplicationContext(), GetEvents.class);
+		intent.putExtra("year", currentYear);
+		intent.putExtra("month", currentMonth);
+		intent.putExtra("day", currentDay);
+		startActivity(intent);
+
+	}
+
+	public void initCalendar() {
 
 		Cursor cur = null;
 		ContentResolver cr = getContentResolver();
@@ -89,7 +141,7 @@ public class MainActivity extends Activity {
 		}
 		cur.close();
 
-		//calendarUri = uri;
+		// calendarUri = uri;
 
 		cur = null;
 		cr = getContentResolver();
@@ -100,10 +152,11 @@ public class MainActivity extends Activity {
 		selectionArgs = new String[] { accountName,
 				CalendarContract.ACCOUNT_TYPE_LOCAL, ownerAccount };
 		// Submit the query and get a Cursor object back.
-		
-		try{
-			
-			cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
+
+		try {
+
+			cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs,
+					null);
 
 			while (cur.moveToNext()) {
 				long calID = 0;
@@ -125,33 +178,10 @@ public class MainActivity extends Activity {
 				Log.v("calid", String.valueOf(calID));
 				CalID = calID;
 			}
-			
+
 		} finally {
 			cur.close();
 		}
-		
-
-		cal = (CalendarView) findViewById(R.id.calendarView1);
-		cal.setOnDateChangeListener(new OnDateChangeListener() {
-
-			@Override
-			public void onSelectedDayChange(CalendarView view, int year,
-					int month, int dayOfMonth) {
-				// TODO Auto-generated method stub
-
-				Toast.makeText(
-						getBaseContext(),
-						"Selected Date is\n\n" + dayOfMonth + " : " + month
-								+ " : " + year, Toast.LENGTH_LONG).show();
-
-				Intent intent = new Intent(getApplicationContext(),
-						GetEvents.class);
-				intent.putExtra("year", year);
-				intent.putExtra("month", month);
-				intent.putExtra("day", dayOfMonth);
-				startActivity(intent);
-			}
-		});
 
 	}
 

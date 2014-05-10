@@ -49,7 +49,8 @@
                     android:id="@+id/event_title_edittext_update"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Event Title" />
+                    android:hint="Enter Event Title"
+                    android:focusableInTouchMode="true" />
             </TableRow>
 
             <TableRow>
@@ -58,7 +59,8 @@
                     android:id="@+id/event_description_edittext_update"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Event Description" />
+                    android:hint="Enter Event Description"
+                    android:focusableInTouchMode="true" />
             </TableRow>
 
             <TableRow>

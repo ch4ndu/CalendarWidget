@@ -3,19 +3,19 @@ package com.udn4hc.calendarwidget;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import android.app.ActionBar;
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract.Events;
-import android.provider.CalendarContract.Instances;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -40,6 +40,10 @@ public class UpdateEvent extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_update_event);
+		
+		ActionBar actionBar = getActionBar();
+	    actionBar.setDisplayHomeAsUpEnabled(true);
+	    
 		Intent intent = getIntent();
 		event = new Event();
 		event = (Event) intent.getSerializableExtra("event");
@@ -119,6 +123,7 @@ public class UpdateEvent extends Activity {
 		int rows = getContentResolver().update(uri, values, null, null);
 		//Uri urit = getContentResolver().insert(uri, values);
 		System.out.println(rows + " number of rows updated");
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 	}
 

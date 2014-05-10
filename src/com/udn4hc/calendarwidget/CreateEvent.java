@@ -3,6 +3,7 @@ package com.udn4hc.calendarwidget;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -26,6 +27,10 @@ public class CreateEvent extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_event);
+		
+		ActionBar actionBar = getActionBar();
+	    actionBar.setDisplayHomeAsUpEnabled(true);
+	    
 		Intent intent = getIntent();
 		month = intent.getIntExtra("month", 0);
 		year = intent.getIntExtra("year", 0);

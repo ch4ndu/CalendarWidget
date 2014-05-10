@@ -2,26 +2,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EBF6FF"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.udn4hc.calendarwidget.MainActivity$PlaceholderFragment" >
 
-    <TextView
-        android:id="@+id/textView1"
+    <Button
+        android:id="@+id/mainActivityButton"
+        style="@style/ButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Calendar Widget"
-        android:textSize="25dp"
-        android:textStyle="bold|italic" />
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@+id/textView1"
+        android:onClick="getAgenda"
+        android:text="Agenda" />
 
     <CalendarView
         android:id="@+id/calendarView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@id/mainActivityButton"
         android:layout_marginTop="60dp" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/calendarView1"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="47dp"
+        android:text="Calendar Widget"
+        android:textColor="@android:color/background_dark"
+        android:textSize="25dp"
+        android:textStyle="bold|italic" />
 
 </RelativeLayout>

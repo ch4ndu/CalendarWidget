@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -13,9 +14,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
-import android.provider.CalendarContract.Events;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,10 @@ public class GetEvents extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_get_events);
+		
+		ActionBar actionBar = getActionBar();
+	    actionBar.setDisplayHomeAsUpEnabled(true);
+	    
 		Intent intent = getIntent();
 		year = intent.getIntExtra("year", 0);
 		month = intent.getIntExtra("month", 0);
@@ -144,14 +149,6 @@ public class GetEvents extends Activity {
 
 	}
 
-	public void addEvent(View view) {
-		Intent intent = new Intent(getApplicationContext(), CreateEvent.class);
-		intent.putExtra("dayofmonth", dayOfMonth);
-		intent.putExtra("month", month);
-		intent.putExtra("year", year);
-		startActivity(intent);
-	}
-
 	private static class ViewHolder {
 		TextView TitleHolder;
 		TextView TimeHolder;
@@ -218,19 +215,23 @@ public class GetEvents extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.get_events, menu);
-		return true;
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.get_events, menu);
+	    return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
+		
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		if (id == R.id.AddEvent) {
+			
+			Intent intent = new Intent(getApplicationContext(), CreateEvent.class);
+			intent.putExtra("dayofmonth", dayOfMonth);
+			intent.putExtra("month", month);
+			intent.putExtra("year", year);
+			startActivity(intent);
+			
 		}
 		return super.onOptionsItemSelected(item);
 	}
