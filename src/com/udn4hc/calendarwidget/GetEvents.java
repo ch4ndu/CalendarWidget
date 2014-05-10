@@ -6,7 +6,6 @@ import java.util.Calendar;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +13,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.provider.CalendarContract.Events;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,21 +29,18 @@ import android.widget.TextView;
 public class GetEvents extends Activity {
 
 	public static ArrayList<Event> list = new ArrayList<Event>();
-	static int year;
-	static int month;
-	static int dayOfMonth;
-	static long startMillis;
-	static long endMillis;
+	static int year, month, dayOfMonth;
+	static long startMillis, endMillis;
 	EventAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_get_events);
-		
+
 		ActionBar actionBar = getActionBar();
-	    actionBar.setDisplayHomeAsUpEnabled(true);
-	    
+		actionBar.setDisplayHomeAsUpEnabled(true);
+
 		Intent intent = getIntent();
 		year = intent.getIntExtra("year", 0);
 		month = intent.getIntExtra("month", 0);
@@ -84,7 +81,7 @@ public class GetEvents extends Activity {
 		endTime.set(year, month, dayOfMonth, 23, 59, 59);
 		endMillis = endTime.getTimeInMillis();
 
-		ContentResolver cr = getContentResolver();
+		// ContentResolver cr = getContentResolver();
 
 		Uri.Builder eventsUriBuilder = CalendarContract.Instances.CONTENT_URI
 				.buildUpon();
@@ -92,11 +89,12 @@ public class GetEvents extends Activity {
 		ContentUris.appendId(eventsUriBuilder, startMillis);
 		ContentUris.appendId(eventsUriBuilder, endMillis);
 
-		Uri eventUri = eventsUriBuilder.build();
+		// Uri eventUri = eventsUriBuilder.build();
 
 		String testsel = "((" + CalendarContract.Instances.CALENDAR_ID
 				+ " = ?)" + " AND (" + CalendarContract.Events.DTSTART
-				+ " >= ?) AND (" + CalendarContract.Events.DTEND + " <= ?))";
+				+ " >= ?) AND (" + CalendarContract.Events.DTEND + " <= ?)"
+				+ " AND ( deleted!=1 ))";
 
 		// String selection = "((" + Instances.CALENDAR_ID + " = ?))";
 		String[] selectionArgs = new String[] { "" + MainActivity.CalID,
@@ -105,8 +103,13 @@ public class GetEvents extends Activity {
 		String[] projection = new String[] { "_id", "title", "description",
 				"dtstart", "dtend" };
 
-		Cursor eventCursor = cr.query(eventUri, projection, testsel,
-				selectionArgs, CalendarContract.Instances.DTSTART + " ASC");
+		Uri testuri = Events.CONTENT_URI;
+		Cursor eventCursor = getContentResolver().query(testuri, projection,
+				testsel, selectionArgs,
+				CalendarContract.Instances.DTSTART + " ASC");
+
+		// Cursor eventCursor = cr.query(eventUri, projection, testsel,
+		// selectionArgs, CalendarContract.Instances.DTSTART + " ASC");
 		// Cursor eventCursor = null;
 
 		try {
@@ -115,7 +118,7 @@ public class GetEvents extends Activity {
 			// CalendarContract.Instances.DTSTART + " ASC");
 
 			while (eventCursor.moveToNext()) {
-				System.out.println("something in cursor");
+				// System.out.println("something in cursor");
 				String description = null;
 				String title = null;
 				long id = 0;
@@ -127,7 +130,7 @@ public class GetEvents extends Activity {
 				description = eventCursor.getString(2);
 				begin = eventCursor.getLong(3);
 				end = eventCursor.getLong(4);
-				System.out.println("in getEvenets, eventid is " + id);
+				// System.out.println("in getEvenets, eventid is " + id);
 				Event event = new Event(title, description, id, begin, end);
 				list.add(event);
 			}
@@ -216,22 +219,23 @@ public class GetEvents extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.get_events, menu);
-	    return super.onCreateOptionsMenu(menu);
+		inflater.inflate(R.menu.get_events, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
+
 		int id = item.getItemId();
 		if (id == R.id.AddEvent) {
-			
-			Intent intent = new Intent(getApplicationContext(), CreateEvent.class);
+
+			Intent intent = new Intent(getApplicationContext(),
+					CreateEvent.class);
 			intent.putExtra("dayofmonth", dayOfMonth);
 			intent.putExtra("month", month);
 			intent.putExtra("year", year);
 			startActivity(intent);
-			
+
 		}
 		return super.onOptionsItemSelected(item);
 	}

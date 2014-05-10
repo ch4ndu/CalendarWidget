@@ -69,10 +69,10 @@ public class MainActivity extends Activity {
 					int month, int dayOfMonth) {
 				// TODO Auto-generated method stub
 
-				Toast.makeText(
-						getBaseContext(),
-						"Selected Date is\n\n" + dayOfMonth + " : " + month
-								+ " : " + year, Toast.LENGTH_LONG).show();
+				// Toast.makeText(
+				// getBaseContext(),
+				// "Selected Date is\n\n" + dayOfMonth + " : " + month
+				// + " : " + year, Toast.LENGTH_LONG).show();
 
 				currentYear = year;
 				currentMonth = month;
@@ -110,7 +110,7 @@ public class MainActivity extends Activity {
 		cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
 		if (!cur.moveToNext()) {
 			// create the calendar since it doesnt exist yet
-			System.out.println("cursor is null, so creating the calendar");
+			// System.out.println("cursor is null, so creating the calendar");
 			Uri calUri = CalendarContract.Calendars.CONTENT_URI;
 			ContentValues cv = new ContentValues();
 			cv.put(CalendarContract.Calendars.ACCOUNT_NAME, accountName);
@@ -171,11 +171,11 @@ public class MainActivity extends Activity {
 				ownerName = cur.getString(PROJECTION_OWNER_ACCOUNT_INDEX);
 
 				// Do something with the values...
-				System.out.println("reading the values");
-				Log.v("displayname", displayName);
-				Log.v("accountname", accountName);
-				Log.v("ownername", ownerName);
-				Log.v("calid", String.valueOf(calID));
+				// System.out.println("reading the values");
+				// Log.v("displayname", displayName);
+				// Log.v("accountname", accountName);
+				// Log.v("ownername", ownerName);
+				// Log.v("calid", String.valueOf(calID));
 				CalID = calID;
 			}
 

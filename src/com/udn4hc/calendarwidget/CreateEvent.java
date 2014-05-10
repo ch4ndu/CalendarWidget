@@ -27,10 +27,10 @@ public class CreateEvent extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_event);
-		
+
 		ActionBar actionBar = getActionBar();
-	    actionBar.setDisplayHomeAsUpEnabled(true);
-	    
+		actionBar.setDisplayHomeAsUpEnabled(true);
+
 		Intent intent = getIntent();
 		month = intent.getIntExtra("month", 0);
 		year = intent.getIntExtra("year", 0);
@@ -74,9 +74,15 @@ public class CreateEvent extends Activity {
 
 		long eventID = Long.parseLong(uri.getLastPathSegment());
 
-		Toast.makeText(getBaseContext(),
-				"Event added with event id: " + String.valueOf(eventID),
+		Toast.makeText(getBaseContext(), "Event successfully added",
 				Toast.LENGTH_LONG).show();
+		Intent intent = new Intent(getApplicationContext(), GetEvents.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+				| Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.putExtra("year", year);
+		intent.putExtra("month", month);
+		intent.putExtra("day", dayOfMonth);
+		startActivity(intent);
 
 	}
 

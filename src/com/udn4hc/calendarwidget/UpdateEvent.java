@@ -18,20 +18,13 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 public class UpdateEvent extends Activity {
-	static String title;
-	static String description;
-	static long begin;
-	static long end;
-	static long id;
-	static int year;
-	static int dayOfMonth;
-	static int month;
-	static int start_hour;
-	static int start_minute;
-	static int end_hour;
-	static int end_minute;
+	static String title, description;
+	static long begin, end, id;
+	static int year, dayOfMonth, month, start_hour, start_minute, end_hour,
+			end_minute;
 	static Event event;
 	TextView titleview, descriptionview, dateview;
 	TimePicker beginPicker, endPicker;
@@ -40,10 +33,10 @@ public class UpdateEvent extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_update_event);
-		
+
 		ActionBar actionBar = getActionBar();
-	    actionBar.setDisplayHomeAsUpEnabled(true);
-	    
+		actionBar.setDisplayHomeAsUpEnabled(true);
+
 		Intent intent = getIntent();
 		event = new Event();
 		event = (Event) intent.getSerializableExtra("event");
@@ -116,14 +109,25 @@ public class UpdateEvent extends Activity {
 		values.put(Events.DTEND, endMillis);
 		values.put(Events.EVENT_TIMEZONE, TimeZone.getDefault().toString());
 
-		
 		Uri uri = ContentUris.withAppendedId(Events.CONTENT_URI, id);
-		System.out.println("event id in update method is " + id);
+		// System.out.println("event id in update method is " + id);
 
 		int rows = getContentResolver().update(uri, values, null, null);
-		//Uri urit = getContentResolver().insert(uri, values);
-		System.out.println(rows + " number of rows updated");
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		// Uri urit = getContentResolver().insert(uri, values);
+		// System.out.println("Event successfully updated");
+		getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+		Toast.makeText(getBaseContext(), "Event successfully updated",
+				Toast.LENGTH_LONG).show();
+
+		Intent intent = new Intent(getApplicationContext(), GetEvents.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+				| Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.putExtra("year", year);
+		intent.putExtra("month", month);
+		intent.putExtra("day", dayOfMonth);
+		startActivity(intent);
 
 	}
 
@@ -134,11 +138,16 @@ public class UpdateEvent extends Activity {
 		System.out.println("event id in delete method is " + id);
 
 		int rows = getContentResolver().delete(uri, null, null);
-		System.out.println(rows + " row deleted");
+		// System.out.println(rows + " row deleted");
+		Toast.makeText(getBaseContext(), "Event successfully deleted",
+				Toast.LENGTH_LONG).show();
 
-		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+		Intent intent = new Intent(getApplicationContext(), GetEvents.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 				| Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.putExtra("year", year);
+		intent.putExtra("month", month);
+		intent.putExtra("day", dayOfMonth);
 		startActivity(intent);
 	}
 
