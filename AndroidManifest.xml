@@ -27,27 +27,15 @@
         </activity>
         <activity
             android:name="com.udn4hc.calendarwidget.CreateEvent"
-            android:label="@string/title_activity_create_event"
-            android:parentActivityName="com.udn4hc.calendarwidget.GetEvents" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.udn4hc.calendarwidget.GetEvents" />
+            android:label="@string/title_activity_create_event" >
         </activity>
         <activity
             android:name="com.udn4hc.calendarwidget.GetEvents"
-            android:label="@string/title_activity_get_events"
-            android:parentActivityName="com.udn4hc.calendarwidget.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.udn4hc.calendarwidget.MainActivity" />
+            android:label="@string/title_activity_get_events" >
         </activity>
         <activity
             android:name="com.udn4hc.calendarwidget.UpdateEvent"
-            android:label="@string/title_activity_update_event"
-            android:parentActivityName="com.udn4hc.calendarwidget.GetEvents" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.udn4hc.calendarwidget.GetEvents" />
+            android:label="@string/title_activity_update_event" >
         </activity>
     </application>
 
