@@ -58,6 +58,10 @@ public class MainActivity extends Activity {
 		SimpleDateFormat df = new SimpleDateFormat("dd/MMM/yyyy");
 		String formattedDate = df.format(c.getTime());
 		tv.setText(formattedDate);
+		currentYear = c.get(Calendar.YEAR);
+		currentMonth=c.get(Calendar.MONTH);
+		currentDay=c.get(Calendar.DAY_OF_MONTH);
+		
 
 		initCalendar();
 
@@ -89,6 +93,8 @@ public class MainActivity extends Activity {
 	public void getAgenda(View view) {
 
 		Intent intent = new Intent(getApplicationContext(), GetEvents.class);
+		//cal.getDate();
+		System.out.println(cal.getDate());
 		intent.putExtra("year", currentYear);
 		intent.putExtra("month", currentMonth);
 		intent.putExtra("day", currentDay);
@@ -170,12 +176,6 @@ public class MainActivity extends Activity {
 				accountName = cur.getString(PROJECTION_ACCOUNT_NAME_INDEX);
 				ownerName = cur.getString(PROJECTION_OWNER_ACCOUNT_INDEX);
 
-				// Do something with the values...
-				// System.out.println("reading the values");
-				// Log.v("displayname", displayName);
-				// Log.v("accountname", accountName);
-				// Log.v("ownername", ownerName);
-				// Log.v("calid", String.valueOf(calID));
 				CalID = calID;
 			}
 

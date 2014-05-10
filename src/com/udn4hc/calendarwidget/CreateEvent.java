@@ -28,9 +28,6 @@ public class CreateEvent extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_event);
 
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-
 		Intent intent = getIntent();
 		month = intent.getIntExtra("month", 0);
 		year = intent.getIntExtra("year", 0);

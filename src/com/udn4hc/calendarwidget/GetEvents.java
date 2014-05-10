@@ -38,8 +38,6 @@ public class GetEvents extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_get_events);
 
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		Intent intent = getIntent();
 		year = intent.getIntExtra("year", 0);

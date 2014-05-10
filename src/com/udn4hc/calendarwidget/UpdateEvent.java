@@ -34,8 +34,6 @@ public class UpdateEvent extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_update_event);
 
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		Intent intent = getIntent();
 		event = new Event();
@@ -63,8 +61,6 @@ public class UpdateEvent extends Activity {
 		start_minute = beginTime.get(Calendar.MINUTE);
 		end_hour = endTime.get(Calendar.HOUR_OF_DAY);
 		end_minute = endTime.get(Calendar.MINUTE);
-		System.out.println("year " + year + " month " + month + " day "
-				+ dayOfMonth);
 		titleview.setText(title);
 		descriptionview.setText(description);
 		dateview.setText((month + 1) + "/" + dayOfMonth + "/" + year);
@@ -75,7 +71,6 @@ public class UpdateEvent extends Activity {
 	}
 
 	public void updateEvent(View view) {
-		Log.v("updateEvent", "update button pressed");
 
 		titleview = (TextView) findViewById(R.id.event_title_edittext_update);
 		descriptionview = (TextView) findViewById(R.id.event_description_edittext_update);
@@ -84,21 +79,15 @@ public class UpdateEvent extends Activity {
 		endPicker = (TimePicker) findViewById(R.id.endtimepicker_update);
 
 		int starthour = beginPicker.getCurrentHour();
-		System.out.println("update event update method start_hour is "
-				+ start_hour);
 		int startminute = beginPicker.getCurrentMinute();
 		Calendar beginTime = Calendar.getInstance();
 		beginTime.set(year, month, dayOfMonth, starthour, startminute, 0);
-		// System.out.println("in updateevent, start variables, year, month,day are "
-		// + year + month+dayOfMonth+starthour + startminute);
 		long startMillis = beginTime.getTimeInMillis();
 
 		int endhour = endPicker.getCurrentHour();
 		int endminute = endPicker.getCurrentMinute();
 		Calendar endTime = Calendar.getInstance();
 		endTime.set(year, month, dayOfMonth, endhour, endminute, 0);
-		// System.out.println("end variables are, year, month, day, hour, minute "
-		// + year + month+ dayOfMonth + endhour + endminute);
 		long endMillis = endTime.getTimeInMillis();
 
 		ContentValues values = new ContentValues();
@@ -110,11 +99,8 @@ public class UpdateEvent extends Activity {
 		values.put(Events.EVENT_TIMEZONE, TimeZone.getDefault().toString());
 
 		Uri uri = ContentUris.withAppendedId(Events.CONTENT_URI, id);
-		// System.out.println("event id in update method is " + id);
 
 		int rows = getContentResolver().update(uri, values, null, null);
-		// Uri urit = getContentResolver().insert(uri, values);
-		// System.out.println("Event successfully updated");
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -135,10 +121,8 @@ public class UpdateEvent extends Activity {
 
 		Uri eventsUri = Events.CONTENT_URI;
 		Uri uri = ContentUris.withAppendedId(eventsUri, id);
-		System.out.println("event id in delete method is " + id);
 
 		int rows = getContentResolver().delete(uri, null, null);
-		// System.out.println(rows + " row deleted");
 		Toast.makeText(getBaseContext(), "Event successfully deleted",
 				Toast.LENGTH_LONG).show();
 
