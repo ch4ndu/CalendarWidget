@@ -3,8 +3,8 @@ package com.udn4hc.calendarwidget;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
@@ -30,19 +30,20 @@ public class GetEvents extends Activity {
 
 	public static ArrayList<Event> list = new ArrayList<Event>();
 	static int year, month, dayOfMonth;
-	static long startMillis, endMillis;
+	static long startMillis, endMillis, calid;
 	EventAdapter adapter;
+	AsyncHelper queryHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_get_events);
 
-
 		Intent intent = getIntent();
 		year = intent.getIntExtra("year", 0);
 		month = intent.getIntExtra("month", 0);
 		dayOfMonth = intent.getIntExtra("day", 0);
+		calid = intent.getLongExtra("calid", 0);
 
 		setTitle((month + 1) + "/" + dayOfMonth + "/" + year);
 
@@ -60,6 +61,7 @@ public class GetEvents extends Activity {
 				Intent intent = new Intent(getApplicationContext(),
 						UpdateEvent.class);
 				intent.putExtra("event", (Serializable) event);
+				intent.putExtra("calid", calid);
 				startActivity(intent);
 			}
 
@@ -71,11 +73,11 @@ public class GetEvents extends Activity {
 
 		list.clear();
 
-		Calendar beginTime = Calendar.getInstance();
+		Calendar beginTime = new GregorianCalendar();
 		beginTime.set(year, month, dayOfMonth, 0, 0, 0);
 		startMillis = beginTime.getTimeInMillis();
 
-		Calendar endTime = Calendar.getInstance();
+		Calendar endTime = new GregorianCalendar();
 		endTime.set(year, month, dayOfMonth, 23, 59, 59);
 		endMillis = endTime.getTimeInMillis();
 
@@ -102,13 +104,13 @@ public class GetEvents extends Activity {
 				"dtstart", "dtend" };
 
 		Uri testuri = Events.CONTENT_URI;
+
+		// queryHelper = new AsyncHelper(getContentResolver());
+		// queryHelper.startQuery(1, null, testuri, projection, testsel,
+		// selectionArgs, CalendarContract.Instances.DTSTART + " ASC");
 		Cursor eventCursor = getContentResolver().query(testuri, projection,
 				testsel, selectionArgs,
 				CalendarContract.Instances.DTSTART + " ASC");
-
-		// Cursor eventCursor = cr.query(eventUri, projection, testsel,
-		// selectionArgs, CalendarContract.Instances.DTSTART + " ASC");
-		// Cursor eventCursor = null;
 
 		try {
 
@@ -207,7 +209,6 @@ public class GetEvents extends Activity {
 			holder.TitleHolder.setText(events.get(position).getTitle());
 			holder.TimeHolder.setText("From " + events.get(position).getBegin()
 					+ " To " + events.get(position).getEnd());
-
 			return convertView;
 		}
 
@@ -232,6 +233,7 @@ public class GetEvents extends Activity {
 			intent.putExtra("dayofmonth", dayOfMonth);
 			intent.putExtra("month", month);
 			intent.putExtra("year", year);
+			intent.putExtra("calid", calid);
 			startActivity(intent);
 
 		}
